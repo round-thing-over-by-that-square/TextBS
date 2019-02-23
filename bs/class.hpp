@@ -85,9 +85,12 @@ public:
 	void setTurn(int turn) {
 		_turn = turn;
 	}
-
+	
+	int getScore() {
+		return _score;
+	}
 private:
-	int _score;
+	int _score = 0;
 	int _turn = -1;
 
 	// ships[0] = Carrier: length 5
@@ -112,8 +115,21 @@ class Environment
 {
 public:
 
+
+
+	int win() {
+		if (_player1.getScore() == 17){
+			return 1;
+		}
+		else if (_player2.getScore() == 17) {
+			return 2;
+		}
+	}
+		
+
 private:
-	int _turn = 0;
+	Player _player1 = Player();
+	Player _player2 = Player();
 };
 
 #endif FILE_CLASS_HPP

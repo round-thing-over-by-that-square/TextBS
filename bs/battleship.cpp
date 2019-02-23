@@ -24,14 +24,34 @@ int main(){
 
 	Player player1 = Player();
 	Player player2 = Player();
-	int turn = 0;
+	Environment environment = Environment();
 
 	//start game loop
 	while(true){
-		
+
+		// if someone wins
+		if (environment.win() == 1 || environment.win() == 2) {
+			break;
+		}
+
+		// if player1 turn
+		if (player1.getTurn() == 1) {
+			//player1 go
+		}
+
+		//else player2 turn
+		else {
+			//player2 go
+		}
 
 	}
-	
+	if (environment.win() == 1) {
+		//announce player1 wins
+	}
+	else {
+		//congrats player2
+	}
+
 	return 0;
 }
 

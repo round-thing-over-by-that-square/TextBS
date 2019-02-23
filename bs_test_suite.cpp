@@ -57,3 +57,8 @@ TEST_CASE("Player.setTurn()", "[p.player.setTurn]") {
 	REQUIRE(p.getTurn() == 0);
 	REQUIRE(p1.getTurn() == 1);
 }
+
+TEST_CASE("Player.getScore()", "[p.player.getScore]") {
+	Player p = Player();
+	REQUIRE(p.getScore() == 0);
+}
