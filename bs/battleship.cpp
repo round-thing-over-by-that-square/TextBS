@@ -37,7 +37,7 @@ int main(){
 		}
 
 		// if player1 turn
-		if (player1.getTurn() == 1) {
+		if (player1.getTurn()) {
 			//player1 go
 		}
 
@@ -46,6 +46,15 @@ int main(){
 			//player2 go
 		}
 
+		//Turn Swap
+		if (player1.getTurn()) {
+			player1.setTurn(false);
+			player2.setTurn(true);
+		}
+		else {
+			player1.setTurn(true);
+			player2.setTurn(false);
+		}
 	}
 	if (environment.win() == 1) {
 		//announce player1 wins

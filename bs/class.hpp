@@ -91,7 +91,7 @@ public:
 	}
 private:
 	int _score = 0;
-	int _turn = -1;
+	bool _turn = false;
 
 	// ships[0] = Carrier: length 5
 	// ships[1] = Battleship: length 4
