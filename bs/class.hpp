@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <memory>
 
 
 #ifndef FILE_CLASS_HPP
@@ -122,11 +123,11 @@ public:
 	//pass in players by reference bc the Environment controls everything. Don't need to pass ships bc the players bring thier own.
 
 	 //*******************************************************************************************************************
-	Player getPlayer1() {
-		return _player1;
+	std::unique_ptr<Player> getPlayer1() {
+		return std::make_unique<Player>(_player1);
 	}									// We only need these for testing, I think, at least so far. Comment out later.
-	Player getPlayer2() {
-		return _player2;
+	std::unique_ptr<Player> getPlayer2() { 
+		return std::make_unique<Player>(_player2);
 	}//********************************************************************************************************************
 
 
