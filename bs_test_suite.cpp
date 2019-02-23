@@ -66,9 +66,14 @@ TEST_CASE("confirm Player.changeTurn() changes the player1 and player2 ._turn", 
 
 }
 
-//TEST_CASE("confirm Player.directHit() changes the player1 and player2 ._score", "[Player.directHit]") {
-//	Environment e = Environment();
-//	REQUIRE(e.getPlayer1()->getScore() == 0);
-//	e.getPlayer1()->directHit();						//directHit() not working
-//	REQUIRE(e.getPlayer1()->getScore() == 1);					
-//}
+TEST_CASE("confirm Player.directHit() changes the player1 and player2 ._score", "[Player.directHit]") {
+	Environment e = Environment();
+	REQUIRE(e.getPlayer1()->getScore() == 0);
+	e.directHit(1);						
+	REQUIRE(e.getPlayer1()->getScore() == 1);
+	for (auto i = 0; i < 16; ++i) {
+		e.directHit(1);
+	}
+	REQUIRE(e.win() == 2);
+
+}

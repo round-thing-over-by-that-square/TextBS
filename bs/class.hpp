@@ -93,7 +93,7 @@ public:
 	}
 	//this is a setter, setScore() with a Battleshipy name 
 	void directHit() {
-		_score++;
+		_score = _score + 1;
 	}
 private:
 	int _score = 0;
@@ -130,7 +130,7 @@ public:
 		return std::make_unique<Player>(_player2);
 	}//********************************************************************************************************************
 
-
+	//Swaps turns. Called from main
 	void changeTurn() {
 		if (_player1.getTurn() == true) {
 			_player1.setTurn(false);
@@ -140,6 +140,16 @@ public:
 			_player1.setTurn(true);
 			_player2.setTurn(false);
 		}
+	}
+
+	void directHit(int playerNumber) {
+		if (playerNumber == 1) {
+			_player1.directHit();
+		}
+		else if (playerNumber == 2) {
+			_player2.directHit();
+		}
+		//player->directHit();
 	}
 
 
