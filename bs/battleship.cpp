@@ -21,10 +21,10 @@ using std::vector;
 static int WIN_WIDTH = 1000;
 
 int main(){
-
+	//Create environment object, which owns 2 players who, in turn, own their fleets of ships
 	Environment environment = Environment();
 
-	//need to add board setup here
+	//need to add board setup here. Players place ships.
 
 	//start game loop
 	while(true){
@@ -36,12 +36,12 @@ int main(){
 
 		// if player1 turn
 		if (environment.getPlayer1()->getTurn()) {
-			//player1 go
+			environment.getPlayer1()->go();
 		}
 
 		//else player2 turn
 		else {
-			//player2 go
+			environment.getPlayer2()->go();
 		}
 
 		//Turn Swap
