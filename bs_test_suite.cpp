@@ -58,13 +58,25 @@ TEST_CASE("Player.setTurn()", "[p.player.setTurn]") {
 	REQUIRE(p2.getTurn() == true);
 }
 
-TEST_CASE("Player.getScore()", "[p.player.getScore]") {
+TEST_CASE("confirm Player.changeTurn() changes the player1 and player2 ._turn", "[Player.changeTurn]") {
 	Environment e = Environment();
 	e.changeTurn();
 	REQUIRE(e.getPlayer1().getTurn() == false);
 	REQUIRE(e.getPlayer2().getTurn() == true);
-	/*for (auto i = 0; i <= 17; ++i) {
-		e.getPlayer1().directHit();
-	}
-	REQUIRE(e.win() == 1);*/
+
 }
+//
+//TEST_CASE("confirm Player.directHit() changes the player1 and player2 ._score", "[Player.directHit]") {
+//	Environment e = Environment();
+//	
+//	Player p = e.getPlayer1();
+//	REQUIRE(p.getScore() == 0);
+//	p.directHit();
+//	REQUIRE(p.getScore() == 1);						///////////////////////Still working on this, but I figured out what to. 
+//	REQUIRE(e.getPlayer1().getScore() == 1);		/////////////////////// the environment.getPlayer1 and 2 functions need to return a unique pointer
+//													///////////////////////  to a _player1 and 2, not a copy of a player.
+//	/*for (auto i = 0; i <= 17; ++i) {
+//			e.getPlayer1().directHit();
+//		}
+//		REQUIRE(e.win() == 1);*/
+//}

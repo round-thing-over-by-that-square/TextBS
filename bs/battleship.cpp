@@ -22,9 +22,7 @@ static int WIN_WIDTH = 1000;
 
 int main(){
 
-	Player player1 = Player();
-	Player player2 = Player();
-	Environment environment = Environment(player1, player2);
+	Environment environment = Environment();
 
 	//need to add board setup here
 

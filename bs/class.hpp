@@ -145,10 +145,10 @@ public:
 	//Anyone win yet?
 	int win() {
 		if (_player1.getScore() >= 17){
-			return 1; //player1 looses, all their their ships are sunk
+			return 2; //player1 looses, all their their ships are sunk
 		}
 		else if (_player2.getScore() >= 17) {
-			return 2; //player2 looses.
+			return 1; //player2 looses.
 		}
 		else {
 			return 0; //still in play
