@@ -26,6 +26,8 @@ int main(){
 	Player player2 = Player();
 	Environment environment = Environment();
 
+	//need to add board setup here
+
 	//start game loop
 	while(true){
 
