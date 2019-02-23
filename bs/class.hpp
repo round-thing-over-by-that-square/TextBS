@@ -120,15 +120,15 @@ private:
 class Environment
 {
 public:
-	//pass in players by reference bc the Environment controls everything. Don't need to pass ships bc the players bring thier own.
-
-	 //*******************************************************************************************************************
+	
+	//returns a unique_ptr to player1
 	std::unique_ptr<Player> getPlayer1() {
 		return std::make_unique<Player>(_player1);
-	}									// We only need these for testing, I think, at least so far. Comment out later.
+	}			
+	//returns a unique_ptr to player2
 	std::unique_ptr<Player> getPlayer2() { 
 		return std::make_unique<Player>(_player2);
-	}//********************************************************************************************************************
+	}
 
 	//Swaps turns. Called from main
 	void changeTurn() {
@@ -142,6 +142,8 @@ public:
 		}
 	}
 
+	//Adjusts Player's score when they receive a direct hit.
+	// Takes an int, 1 if player1 hit, 2 if player2 hit.
 	void directHit(int playerNumber) {
 		if (playerNumber == 1) {
 			_player1.directHit();
@@ -149,7 +151,6 @@ public:
 		else if (playerNumber == 2) {
 			_player2.directHit();
 		}
-		//player->directHit();
 	}
 
 
