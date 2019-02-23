@@ -61,4 +61,6 @@ TEST_CASE("Player.setTurn()", "[p.player.setTurn]") {
 TEST_CASE("Player.getScore()", "[p.player.getScore]") {
 	Player p = Player();
 	REQUIRE(p.getScore() == 0);
+	p.setTurn(true);
+	REQUIRE(p.getTurn() == true);
 }
