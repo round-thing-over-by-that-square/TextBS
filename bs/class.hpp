@@ -72,6 +72,8 @@ private:
 class Player
 {
 public:
+	Player(bool turn) :_turn{ turn }{}
+
 	//getters and setters
 	std::vector<Ship> getShips() {
 		return _ships;
@@ -81,7 +83,7 @@ public:
 		return _turn;
 	}
 
-	void setTurn(int turn) {
+	void setTurn(bool turn) {
 		_turn = turn;
 	}
 	
@@ -94,7 +96,7 @@ public:
 	}
 private:
 	int _score = 0;
-	bool _turn = false;
+	bool _turn;
 
 	// ships[0] = Carrier: length 5
 	// ships[1] = Battleship: length 4
@@ -118,12 +120,25 @@ class Environment
 {
 public:
 	//pass in players by reference bc the Environment controls everything. Don't need to pass ships bc the players bring thier own.
-	Environment(Player &player1, Player &player2){
-	}
 
-	// We only need this for testing, I think, at least so far. Comment out later. *****************************************
+	 //*******************************************************************************************************************
 	Player getPlayer1() {
 		return _player1;
+	}									// We only need these for testing, I think, at least so far. Comment out later.
+	Player getPlayer2() {
+		return _player2;
+	}//********************************************************************************************************************
+
+
+	void changeTurn() {
+		if (_player1.getTurn() == true) {
+			_player1.setTurn(false);
+			_player2.setTurn(true);
+		}
+		else {
+			_player1.setTurn(true);
+			_player2.setTurn(false);
+		}
 	}
 
 
@@ -142,8 +157,8 @@ public:
 		
 
 private:
-	Player _player1 = Player();
-	Player _player2 = Player();
+	Player _player1 = Player(true);
+	Player _player2 = Player(false);
 };
 
 #endif FILE_CLASS_HPP

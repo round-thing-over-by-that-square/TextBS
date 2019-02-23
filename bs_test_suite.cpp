@@ -41,7 +41,7 @@ TEST_CASE("return the correct vector of coords, West", "[s.getcoords]") {
 }
 
 TEST_CASE("player.ships[i].getLen()", "[p.player.ships[i].getLen]") {
-	Player p = Player();
+	Player p = Player(true);
 	REQUIRE(p.getShips()[0].getLen() == 5);
 	REQUIRE(p.getShips()[1].getLen() == 4);
 	REQUIRE(p.getShips()[2].getLen() == 3);
@@ -50,23 +50,21 @@ TEST_CASE("player.ships[i].getLen()", "[p.player.ships[i].getLen]") {
 }
 
 TEST_CASE("Player.setTurn()", "[p.player.setTurn]") {
-	Player p = Player();
-	Player p1 = Player();
-	p.setTurn(0);
-	p1.setTurn(1);
-	REQUIRE(p.getTurn() == 0);
-	REQUIRE(p1.getTurn() == 1);
+	Player p1 = Player(true);
+	Player p2 = Player(false);
+	p1.setTurn(false);
+	p2.setTurn(true);
+	REQUIRE(p1.getTurn() == false);
+	REQUIRE(p2.getTurn() == true);
 }
 
 TEST_CASE("Player.getScore()", "[p.player.getScore]") {
-	Player p = Player();
-	Player p1 = Player();
-	Environment e = Environment(p, p1);
-	REQUIRE(e.getPlayer1().getScore() == 0);
-	e.getPlayer1().setTurn(true);
-	REQUIRE(e.getPlayer1().getTurn() == true);
-	for (auto i = 0; i <= 17; ++i) {
+	Environment e = Environment();
+	e.changeTurn();
+	REQUIRE(e.getPlayer1().getTurn() == false);
+	REQUIRE(e.getPlayer2().getTurn() == true);
+	/*for (auto i = 0; i <= 17; ++i) {
 		e.getPlayer1().directHit();
 	}
-	REQUIRE(e.win() == 1);
+	REQUIRE(e.win() == 1);*/
 }
