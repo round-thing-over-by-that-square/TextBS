@@ -75,7 +75,7 @@ class Player
 public:
 	Player(bool turn) :_turn{ turn }{}
 
-	//getters and setters
+	//Start getters and setters
 	std::vector<Ship> getShips() {
 		return _ships;
 	}
@@ -95,6 +95,13 @@ public:
 	void directHit() {
 		_score = _score + 1;
 	}
+	//end setters and getterss
+
+	//Lob a bomb.
+	void go() {
+		// need to write
+	}
+
 private:
 	int _score = 0;
 	bool _turn;
