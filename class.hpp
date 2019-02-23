@@ -18,22 +18,22 @@ public:
 		switch (_direction) {
 		case 'N':
 			for (auto i = 1; i < _length; ++i) {
-				_coords[i] = std::make_pair(_startcoord.first, _startcoord.second + i);
+				_coords.push_back(std::make_pair(_startcoord.first, _startcoord.second + i));
 			}
 			break;
 		case 'S':
 			for (auto i = 1; i < _length; ++i) {
-				_coords[i] = std::make_pair(_startcoord.first, _startcoord.second - i);
+				_coords.push_back(std::make_pair(_startcoord.first, _startcoord.second - i));
 			}
 			break;
 		case 'E':
 			for (auto i = 1; i < _length; ++i) {
-				_coords[i] = std::make_pair(_startcoord.first + i, _startcoord.second);
+				_coords.push_back(std::make_pair(_startcoord.first + i, _startcoord.second));
 			}
 			break;
 		case 'W':
 			for (auto i = 1; i < _length; ++i) {
-				_coords[i] = std::make_pair(_startcoord.first - i, _startcoord.second);
+				_coords.push_back(std::make_pair(_startcoord.first - i, _startcoord.second));
 			}
 			break;
 		}
