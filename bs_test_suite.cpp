@@ -40,12 +40,20 @@ TEST_CASE("return the correct vector of coords, West", "[s.getcoords]") {
 	REQUIRE(s.getCoords() == v);
 }
 
-TEST_CASE("player.ships[i].getLen()", "[s.player.ships[i].getLen]") {
+TEST_CASE("player.ships[i].getLen()", "[p.player.ships[i].getLen]") {
 	Player p = Player();
 	REQUIRE(p.getShips()[0].getLen() == 5);
 	REQUIRE(p.getShips()[1].getLen() == 4);
 	REQUIRE(p.getShips()[2].getLen() == 3);
 	REQUIRE(p.getShips()[3].getLen() == 3);
 	REQUIRE(p.getShips()[4].getLen() == 2);
+}
 
+TEST_CASE("Player.setTurn()", "[p.player.setTurn]") {
+	Player p = Player();
+	Player p1 = Player();
+	p.setTurn(0);
+	p1.setTurn(1);
+	REQUIRE(p.getTurn() == 0);
+	REQUIRE(p1.getTurn() == 1);
 }

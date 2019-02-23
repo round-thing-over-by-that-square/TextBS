@@ -78,8 +78,17 @@ public:
 		return _ships;
 	}
 
+	int getTurn() {
+		return _turn;
+	}
+
+	void setTurn(int turn) {
+		_turn = turn;
+	}
+
 private:
 	int _score;
+	int _turn = -1;
 
 	// ships[0] = Carrier: length 5
 	// ships[1] = Battleship: length 4
@@ -104,7 +113,7 @@ class Environment
 public:
 
 private:
-
+	int _turn = 0;
 };
 
 #endif FILE_CLASS_HPP
