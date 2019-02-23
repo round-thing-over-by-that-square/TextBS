@@ -72,8 +72,7 @@ private:
 class Player
 {
 public:
-	Player() {}
-
+	//getters and setters
 	std::vector<Ship> getShips() {
 		return _ships;
 	}
@@ -88,6 +87,10 @@ public:
 	
 	int getScore() {
 		return _score;
+	}
+	//this is a setter, setScore() with a Battleshipy name 
+	void directHit() {
+		_score++;
 	}
 private:
 	int _score = 0;
@@ -114,15 +117,26 @@ private:
 class Environment
 {
 public:
+	//pass in players by reference bc the Environment controls everything. Don't need to pass ships bc the players bring thier own.
+	Environment(Player &player1, Player &player2){
+	}
+
+	// We only need this for testing, I think, at least so far. Comment out later. *****************************************
+	Player getPlayer1() {
+		return _player1;
+	}
 
 
-
+	//Anyone win yet?
 	int win() {
-		if (_player1.getScore() == 17){
-			return 1;
+		if (_player1.getScore() >= 17){
+			return 1; //player1 looses, all their their ships are sunk
 		}
-		else if (_player2.getScore() == 17) {
-			return 2;
+		else if (_player2.getScore() >= 17) {
+			return 2; //player2 looses.
+		}
+		else {
+			return 0; //still in play
 		}
 	}
 		

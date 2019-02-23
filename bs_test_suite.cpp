@@ -60,7 +60,13 @@ TEST_CASE("Player.setTurn()", "[p.player.setTurn]") {
 
 TEST_CASE("Player.getScore()", "[p.player.getScore]") {
 	Player p = Player();
-	REQUIRE(p.getScore() == 0);
-	p.setTurn(true);
-	REQUIRE(p.getTurn() == true);
+	Player p1 = Player();
+	Environment e = Environment(p, p1);
+	REQUIRE(e.getPlayer1().getScore() == 0);
+	e.getPlayer1().setTurn(true);
+	REQUIRE(e.getPlayer1().getTurn() == true);
+	for (auto i = 0; i <= 17; ++i) {
+		e.getPlayer1().directHit();
+	}
+	REQUIRE(e.win() == 1);
 }
