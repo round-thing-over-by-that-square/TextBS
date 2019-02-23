@@ -12,24 +12,11 @@ using std::vector;
 #include <iostream>
 
 
-class Player
-{
-public:
-	Player() {}
-private:
-	int _score;
-};
 
 
 
 
-class Environment
-{
-public:
 
-private:
-
-};
 
 static int WIN_WIDTH = 1000;
 

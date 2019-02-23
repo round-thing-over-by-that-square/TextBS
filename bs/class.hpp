@@ -5,8 +5,15 @@
 #include <vector>
 
 
-#ifndef FILE_SHIP_HPP
-#define FILE_SHIP_HPP
+#ifndef FILE_CLASS_HPP
+#define FILE_CLASS_HPP
+
+
+
+///////////////////
+//  SHIP CLASS   // 
+///////////////////
+
 class Ship
 {
 public:
@@ -58,4 +65,46 @@ private:
 
 };
 
-#endif FILE_SHIP_HPP
+/////////////////////
+//  PLAYER CLASS   // 
+/////////////////////
+
+class Player
+{
+public:
+	Player() {}
+
+	std::vector<Ship> getShips() {
+		return _ships;
+	}
+
+private:
+	int _score;
+
+	// ships[0] = Carrier: length 5
+	// ships[1] = Battleship: length 4
+	// ships[2] = Crusier: length 3
+	// ships[3] = Sub: length 3
+	// ships[4] = Destroyer: length 2
+	//initialize all to _direction = 'Z' and _startcoord = (-1, -1)
+	std::vector<Ship> _ships = { Ship(5, std::make_pair(-1, -1), 'Z'),
+								Ship(4, std::make_pair(-1, -1), 'Z'),
+								Ship(3, std::make_pair(-1, -1), 'Z'),
+								Ship(3, std::make_pair(-1, -1), 'Z'),
+								Ship(2, std::make_pair(-1, -1), 'Z') };
+
+};
+
+//////////////////////////
+//  ENVIRONMENT CLASS   // 
+//////////////////////////
+
+class Environment
+{
+public:
+
+private:
+
+};
+
+#endif FILE_CLASS_HPP

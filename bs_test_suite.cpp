@@ -41,11 +41,11 @@ TEST_CASE("return the correct vector of coords, West", "[s.getcoords]") {
 }
 
 TEST_CASE("player.ships[i].getLen()", "[s.player.ships[i].getLen]") {
-	Ship s = Ship(4, make_pair(10, 2), 'W');
-	REQUIRE(s.ships[0].len() == 5);
-	REQUIRE(s.ships[1].len() == 4);
-	REQUIRE(s.ships[2].len() == 3);
-	REQUIRE(s.ships[3].len() == 3);
-	REQUIRE(s.ships[4].len() == 2);
+	Player p = Player();
+	REQUIRE(p.getShips()[0].getLen() == 5);
+	REQUIRE(p.getShips()[1].getLen() == 4);
+	REQUIRE(p.getShips()[2].getLen() == 3);
+	REQUIRE(p.getShips()[3].getLen() == 3);
+	REQUIRE(p.getShips()[4].getLen() == 2);
 
 }
