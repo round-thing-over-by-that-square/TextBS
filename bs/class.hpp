@@ -3,17 +3,9 @@
 #include <string>
 #include <utility>
 #include <vector>
-<<<<<<< HEAD
-#include <iostream>
-using std::vector;
-using std::cout;
-using std::endl;
-
-=======
 #include <memory>
 #include <iostream>
 #include <sstream>
->>>>>>> 9dcd07a22c6086ba9c59e7aae5415a234f7cbb10
 
 #ifndef FILE_CLASS_HPP
 #define FILE_CLASS_HPP
