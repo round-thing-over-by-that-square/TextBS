@@ -61,8 +61,8 @@ public:
 		return _startcoord;
 	}
 
-	void setStartCoord(std::pair<int, int> sCoord) {
-		_startcoord = sCoord;
+	void setStartCoord(const std::pair<int, int> &coord) {
+		_startcoord = coord;
 		
 	}
 
@@ -125,6 +125,9 @@ public:
 		_ships[ship].setCoords(coords);
 	}
 
+	void setStartCoord(int ship, const std::pair<int, int> &coord) {
+		_ships[ship].setStartCoord(coord);
+	}
 	
 	int getScore() {
 		return _score;
@@ -141,16 +144,16 @@ public:
 	}
 
 	//Returns true if you are not attempting to place one ship on top of another, else returns false
-	bool noOverlap(std::pair<int, int> startCoord, char dir, const Ship &s) {
+	bool noOverlap(std::pair<int, int> startCoord, char dir, int ship) {
 		//generate potential coords for ship you are placing to cross check against already placed ships' coords
-		auto coordsNew = s.gencoords(startCoord, dir, s.getLen());
+		auto coordsNew = _ships[ship].gencoords(startCoord, dir, _ships[ship].getLen());
 		//look at each ship
-		for (auto ship : _ships) {
+		for (auto sh : _ships) {
 			//if the x value of the start coord is still -1, it hasn't been placed yet, so ignore it.
-			if (ship.getStartCoord().first != -1) {
+			if (sh.getStartCoord().first != -1) {
 				//if it has been placed, loop through its coords, and compare them to the
 				//potential coords of the ship you are placing.
-				for (auto coordExisting : ship.getCoords()) {
+				for (auto coordExisting : sh.getCoords()) {
 					for (auto coordNew : coordsNew) {
 						if (coordExisting == coordNew) {
 							return false;
@@ -163,19 +166,19 @@ public:
 	}
 
 	void placeShips() {
-		for (auto ship : _ships) {
+		for (auto ship = 0; ship < _ships.size(); ship++) {
 			int x;
 			int y;
 			char dir;
 			while (true) {
 				//enter a start x coord
 				while (!std::cin || x < 0 || x > 9) {
-					std::cout << "Please enter the x coordinate at which to place the starting end of your " << ship.getName() << std::endl;
+					std::cout << "Please enter the x coordinate at which to place the starting end of your " << _ships[ship].getName() << std::endl;
 					std::cin >> x;
 				}
 				//enter a start y coord
 				while (!std::cin || y < 0 || y > 9) {
-					std::cout << "\nPlease enter the y coordinate at which to place the starting end of your " << ship.getName() << std::endl;
+					std::cout << "\nPlease enter the y coordinate at which to place the starting end of your " << _ships[ship].getName() << std::endl;
 					std::cin >> y;
 				}
 				//enter a direction
@@ -186,8 +189,8 @@ public:
 				std::pair<int, int> startCoord = std::make_pair(x, y);
 				//confirm that you aren't placing on top of an existing ship, and place it.
 				if (noOverlap(startCoord, dir, ship)) {
-					ship.setStartCoord(startCoord);
-					ship.setDirection(dir);
+					_ships[ship].setStartCoord(startCoord);
+					_ships[ship].setDirection(dir);
 				}
 				//Bad placement. Try again 
 				else {
@@ -234,12 +237,30 @@ public:
 		}
 	}
 
+	void setShipStartCoord(int player, int ship, const std::pair<int, int> &coord) {
+		if (player == 1) {
+			_player1.setStartCoord(ship, coord);
+		}
+		else if (player == 2) {
+			_player2.setStartCoord(ship, coord);
+		}
+	}
+
 	void setPlayerTurn(int player, bool turn) {
 		if (player == 1) {
 			_player1.setTurn(turn);
 		}
 		else if (player == 2) {
 			_player2.setTurn(turn);
+		}
+	}
+
+	bool noOverlap(int player, std::pair<int, int> startCoord, char dir, int ship) {
+		if (player == 1) {
+			return _player1.noOverlap(startCoord, dir, ship);
+		}
+		else if (player == 2) {
+			return _player2.noOverlap(startCoord, dir, ship);
 		}
 	}
 

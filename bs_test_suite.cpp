@@ -88,14 +88,15 @@ TEST_CASE("test Ship.setCoords()", "[Ship.setCoords]") {
 	e.setShipCoords(1, 2, c);
 	REQUIRE(e.getPlayer1()->getShips()[2].getCoords() == c);
 }
-//
-//TEST_CASE("test noOverlap()", "[Player.noOverlap]") {
-//	Player p = Player(true);
-//	auto ships = p.getShips();
-//	p.getShips()[2].setStartCoord(std::make_pair(2, 2));
-//	p.getShips()[2].setCoords({ std::make_pair(2,2), std::make_pair(2,3), std::make_pair(2,4) });
-//	REQUIRE(p.noOverlap(std::make_pair(2, 5), 'N', ships[3]) == false);
-//}
+
+TEST_CASE("test noOverlap()", "[Player.noOverlap]") {
+	Environment e = Environment();
+	std::vector<std::pair<int, int>> c = { std::make_pair(2,2), std::make_pair(2,3), std::make_pair(2,4) };
+	e.setShipStartCoord(1, 2, c[0]);
+	e.setShipCoords(1, 2, c);
+	
+	REQUIRE(e.noOverlap(1, std::make_pair(2, 5), 'N', 3) == false);
+}
 
 
 
