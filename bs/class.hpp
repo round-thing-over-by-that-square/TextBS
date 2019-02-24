@@ -4,7 +4,7 @@
 #include <utility>
 #include <vector>
 #include <memory>
-
+#include <iostream>
 
 #ifndef FILE_CLASS_HPP
 #define FILE_CLASS_HPP
@@ -18,46 +18,79 @@
 class Ship
 {
 public:
-	Ship(int length, std::pair<int, int> start, char d) : _length{ length }, _startcoord{ start }, _direction{ d }{};
+	Ship(int length, std::pair<int, int> start, char d, const std::string &name) : _length{ length }, _startcoord{ start }, _direction{ d }, _name{ name }{};
 	
 
- 
-	void gencoords() {
-		switch (_direction) {
-		case 'N':
-			for (auto i = 1; i < _length; ++i) {
-				_coords.push_back(std::make_pair(_startcoord.first, _startcoord.second + i));
+	//generate coordinates for newly placed ship based on _direction and _startcoord
+	//Does not allow a ship to hang over the edge of the board, but doesn't handle placing a ship on top of another
+	std::vector<std::pair<int, int>> gencoords(std::pair<int, int> startCoord, char dir, int length) const {
+		std::vector<std::pair<int, int>> coords;
+		if (startCoord.first != -1) {
+			switch (dir) {
+			case 'N':
+				for (auto i = 0; i < length; ++i) {
+					coords.push_back(std::make_pair(startCoord.first, startCoord.second + i));
+				}
+				break;
+			case 'S':
+				for (auto i = 0; i < length; ++i) {
+					coords.push_back(std::make_pair(startCoord.first, startCoord.second - i));
+				}
+				break;
+			case 'E':
+				for (auto i = 0; i < length; ++i) {
+					coords.push_back(std::make_pair(startCoord.first + i, startCoord.second));
+				}
+				break;
+			case 'W':
+				for (auto i = 0; i < length; ++i) {
+					coords.push_back(std::make_pair(startCoord.first - i, startCoord.second));
+				}
+				break;
 			}
-			break;
-		case 'S':
-			for (auto i = 1; i < _length; ++i) {
-				_coords.push_back(std::make_pair(_startcoord.first, _startcoord.second - i));
-			}
-			break;
-		case 'E':
-			for (auto i = 1; i < _length; ++i) {
-				_coords.push_back(std::make_pair(_startcoord.first + i, _startcoord.second));
-			}
-			break;
-		case 'W':
-			for (auto i = 1; i < _length; ++i) {
-				_coords.push_back(std::make_pair(_startcoord.first - i, _startcoord.second));
-			}
-			break;
 		}
+		return coords;
 	}
-	
+
+	//Start setters and getters
+	int getLen() const {
+		return _length;
+	}
+
+	std::pair<int, int> getStartCoord() const {
+		return _startcoord;
+	}
+
+	void setStartCoord(std::pair<int, int> sCoord) {
+		_startcoord = sCoord;
+		
+	}
+
+	char getDirection() const {
+		return _direction;
+	}
+
+	void setDirection(char dir) {
+		_direction = dir;
+	}
+
 	std::vector<std::pair<int, int>> getCoords() {
 		return _coords;
 	}
 
-	int getLen() {
-		return _length;
+	void setCoords(std::vector<std::pair<int, int>> coords) {
+		_coords = coords;
 	}
+
+	std::string getName() {
+		return _name;
+	}
+	//end setters and getters
 
 
 
 private:
+	std::string _name;
 	char _direction;
 	int _length;
 	std::pair <int, int> _startcoord;
@@ -102,6 +135,63 @@ public:
 		// need to write
 	}
 
+	bool noOverlap(std::pair<int, int> startCoord, char dir, const Ship &s) {
+		//generate potential coords for ship you are placing to cross check against already placed ships' coords
+		auto coordsNew = s.gencoords(startCoord, dir, s.getLen());
+
+		//look at each ship
+		for (auto ship : _ships) {
+			//if the x value of the start coord is still -1, it hasn't been placed yet.
+			if (ship.getStartCoord().first != -1) {
+				//if it has been placed, loop through its coords, and compare them to the
+				//potential coords of the ship you are placing.
+				for (auto coordExisting : ship.getCoords()) {
+					for (auto coordNew : coordsNew) {
+						if (coordExisting == coordNew) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	void placeShips() {
+		for (auto ship : _ships) {
+			int x;
+			int y;
+			char dir;
+			while (true) {
+				//enter a start x coord
+				while (!std::cin || x < 0 || x > 9) {
+					std::cout << "Please enter the x coordinate at which to place the starting end of your " << ship.getName() << std::endl;
+					std::cin >> x;
+				}
+				//enter a start y coord
+				while (!std::cin || y < 0 || y > 9) {
+					std::cout << "\nPlease enter the y coordinate at which to place the starting end of your " << ship.getName() << std::endl;
+					std::cin >> y;
+				}
+				while (!std::cin || (dir != 'N' || dir != 'S' || dir != 'E' || dir != 'W')) {
+					std::cout << "\nPlease enter the direction in which to extend the ship from your start coordinate." << std::endl;
+					std::cin >> dir;
+				}
+				std::pair<int, int> startCoord = std::make_pair(x, y);
+				if (noOverlap(startCoord, dir, ship)) {
+					ship.setStartCoord(startCoord);
+					ship.setDirection(dir);
+				}
+				else {
+					std::cout << "The placement you requested is invalid. No part of 2 or more ships may not occupy the same location." << std::endl;
+					std::cout << "Please try again." << std::endl;
+				}
+			}
+			
+		}
+		//write this
+	}
+
 private:
 	int _score = 0;
 	bool _turn;
@@ -112,11 +202,11 @@ private:
 	// ships[3] = Sub: length 3
 	// ships[4] = Destroyer: length 2
 	//initialize all to _direction = 'Z' and _startcoord = (-1, -1)
-	std::vector<Ship> _ships = { Ship(5, std::make_pair(-1, -1), 'Z'),
-								Ship(4, std::make_pair(-1, -1), 'Z'),
-								Ship(3, std::make_pair(-1, -1), 'Z'),
-								Ship(3, std::make_pair(-1, -1), 'Z'),
-								Ship(2, std::make_pair(-1, -1), 'Z') };
+	std::vector<Ship> _ships = { Ship(5, std::make_pair(-1, -1), 'Z', "Carrier"),
+								Ship(4, std::make_pair(-1, -1), 'Z', "Battleship"),
+								Ship(3, std::make_pair(-1, -1), 'Z', "Crusier"),
+								Ship(3, std::make_pair(-1, -1), 'Z', "Submarine"),
+								Ship(2, std::make_pair(-1, -1), 'Z', "Destroyer") };
 
 };
 

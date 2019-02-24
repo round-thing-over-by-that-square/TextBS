@@ -45,15 +45,10 @@ int main(){
 		}
 
 		//Turn Swap
-		if (environment.getPlayer1()->getTurn()) {
-			environment.getPlayer1()->setTurn(false);
-			environment.getPlayer2()->setTurn(true);
-		}
-		else {
-			environment.getPlayer1()->setTurn(true);
-			environment.getPlayer2()->setTurn(false);
-		}
+		environment.changeTurn();
 	}
+	//end game loop
+
 	if (environment.win() == 1) {
 		//announce player1 wins
 	}
