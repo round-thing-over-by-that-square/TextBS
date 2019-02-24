@@ -29,12 +29,12 @@ public:
 			switch (dir) {
 			case 'N':
 				for (auto i = 0; i < length; ++i) {
-					coords.push_back(std::make_pair(startCoord.first, startCoord.second + i));
+					coords.push_back(std::make_pair(startCoord.first, startCoord.second - i));
 				}
 				break;
 			case 'S':
 				for (auto i = 0; i < length; ++i) {
-					coords.push_back(std::make_pair(startCoord.first, startCoord.second - i));
+					coords.push_back(std::make_pair(startCoord.first, startCoord.second + i));
 				}
 				break;
 			case 'E':
@@ -78,16 +78,15 @@ public:
 		return _coords;
 	}
 
-	void setCoords(std::vector<std::pair<int, int>> coords) {
+	void setCoords(const std::vector<std::pair<int, int>> &coords) {
 		_coords = coords;
+		std::cout << coords[0].first << std::endl; //////////////////////////////////debugging
 	}
 
 	std::string getName() {
 		return _name;
 	}
 	//end setters and getters
-
-
 
 private:
 	std::string _name;
@@ -135,13 +134,13 @@ public:
 		// need to write
 	}
 
+	//Returns true if you are not attempting to place one ship on top of another, else returns false
 	bool noOverlap(std::pair<int, int> startCoord, char dir, const Ship &s) {
 		//generate potential coords for ship you are placing to cross check against already placed ships' coords
 		auto coordsNew = s.gencoords(startCoord, dir, s.getLen());
-
 		//look at each ship
 		for (auto ship : _ships) {
-			//if the x value of the start coord is still -1, it hasn't been placed yet.
+			//if the x value of the start coord is still -1, it hasn't been placed yet, so ignore it.
 			if (ship.getStartCoord().first != -1) {
 				//if it has been placed, loop through its coords, and compare them to the
 				//potential coords of the ship you are placing.
@@ -173,23 +172,24 @@ public:
 					std::cout << "\nPlease enter the y coordinate at which to place the starting end of your " << ship.getName() << std::endl;
 					std::cin >> y;
 				}
+				//enter a direction
 				while (!std::cin || (dir != 'N' || dir != 'S' || dir != 'E' || dir != 'W')) {
 					std::cout << "\nPlease enter the direction in which to extend the ship from your start coordinate." << std::endl;
 					std::cin >> dir;
 				}
 				std::pair<int, int> startCoord = std::make_pair(x, y);
+				//confirm that you aren't placing on top of an existing ship, and place it.
 				if (noOverlap(startCoord, dir, ship)) {
 					ship.setStartCoord(startCoord);
 					ship.setDirection(dir);
 				}
+				//Bad placement. Try again 
 				else {
 					std::cout << "The placement you requested is invalid. No part of 2 or more ships may not occupy the same location." << std::endl;
 					std::cout << "Please try again." << std::endl;
 				}
-			}
-			
+			}//end while loop
 		}
-		//write this
 	}
 
 private:

@@ -6,7 +6,7 @@ using std::make_pair;
 
 
 TEST_CASE("return the correct ship length", "[s.getLen]") {
-	Ship s = Ship(4, make_pair(1, 2), 'N', "Carrier"); 
+	Ship s = Ship(4, make_pair(1, 2), 'N', "Battleship"); 
 	auto coords = s.gencoords(s.getStartCoord(), s.getDirection(), s.getLen());
 	s.setCoords(coords);
 	std::vector<std::pair<int, int>> v = { make_pair(1,2), make_pair(1,3), make_pair(1,4), make_pair(1,5) };
@@ -14,34 +14,34 @@ TEST_CASE("return the correct ship length", "[s.getLen]") {
 }
 
 TEST_CASE("return the correct vector of coords, North", "[s.getcoords]") {
-	Ship s = Ship(4, make_pair(1, 2), 'N', "Carrier");
+	Ship s = Ship(4, make_pair(5, 5), 'N', "Battleship");
 	auto coords = s.gencoords(s.getStartCoord(), s.getDirection(), s.getLen());
 	s.setCoords(coords);
-	std::vector<std::pair<int, int>> v = { make_pair(1,2), make_pair(1,3), make_pair(1,4), make_pair(1,5) };
+	std::vector<std::pair<int, int>> v = { make_pair(5,5), make_pair(5,4), make_pair(5,3), make_pair(5,2) };
 	REQUIRE(s.getCoords() == v);
 }
 
 TEST_CASE("return the correct vector of coords, South", "[s.getcoords]") {
-	Ship s = Ship(4, make_pair(1, 10), 'S', "Carrier");
+	Ship s = Ship(4, make_pair(5, 5), 'S', "Battleship");
 	auto coords = s.gencoords(s.getStartCoord(), s.getDirection(), s.getLen());
 	s.setCoords(coords);
-	std::vector<std::pair<int, int>> v = { make_pair(1,10), make_pair(1,9), make_pair(1,8), make_pair(1,7) };
+	std::vector<std::pair<int, int>> v = { make_pair(5, 5), make_pair(5, 6), make_pair(5, 7), make_pair(5, 8) };
 	REQUIRE(s.getCoords() == v);
 }
 
 TEST_CASE("return the correct vector of coords, East", "[s.getcoords]") {
-	Ship s = Ship(4, make_pair(1, 2), 'E', "Carrier");
+	Ship s = Ship(4, make_pair(5, 5), 'E', "Battleship");
 	auto coords = s.gencoords(s.getStartCoord(), s.getDirection(), s.getLen());
 	s.setCoords(coords);
-	std::vector<std::pair<int, int>> v = { make_pair(1,2), make_pair(2,2), make_pair(3,2), make_pair(4,2) };
+	std::vector<std::pair<int, int>> v = { make_pair(5, 5), make_pair(6, 5), make_pair(7, 5), make_pair(8, 5) };
 	REQUIRE(s.getCoords() == v);
 }
 
 TEST_CASE("return the correct vector of coords, West", "[s.getcoords]") {
-	Ship s = Ship(4, make_pair(10, 2), 'W', "Carrier");
+	Ship s = Ship(4, make_pair(5, 5), 'W', "Carrier");
 	auto coords = s.gencoords(s.getStartCoord(), s.getDirection(), s.getLen());
 	s.setCoords(coords);
-	std::vector<std::pair<int, int>> v = { make_pair(10,2), make_pair(9,2), make_pair(8,2), make_pair(7,2) };
+	std::vector<std::pair<int, int>> v = { make_pair(5, 5), make_pair(4, 5), make_pair(3, 5), make_pair(2, 5) };
 	REQUIRE(s.getCoords() == v);
 }
 
@@ -71,7 +71,7 @@ TEST_CASE("confirm Player.changeTurn() changes the player1 and player2 ._turn", 
 
 }
 
-TEST_CASE("confirm Player.directHit() changes the player1 and player2 ._score", "[Player.directHit]") {
+TEST_CASE("confirm Player.directHit() changes the player1 and player2 ._score, and test win()", "[Player.directHit]") {
 	Environment e = Environment();
 	REQUIRE(e.getPlayer1()->getScore() == 0);
 	e.directHit(1);						
@@ -82,3 +82,23 @@ TEST_CASE("confirm Player.directHit() changes the player1 and player2 ._score", 
 	REQUIRE(e.win() == 2);
 
 }
+
+TEST_CASE("test Ship.setCoords()", "[Ship.setCoords]") {
+	Environment e = Environment();
+	auto ships = e.getPlayer1()->getShips();
+	e.getPlayer1()->getShips()[2].setCoords({ std::make_pair(2,2), std::make_pair(2,3), std::make_pair(2,4) });
+	std::vector<std::pair<int, int>> c{ std::make_pair(2, 2), std::make_pair(2, 3), std::make_pair(2, 4) };
+	REQUIRE(e.getPlayer1()->getShips()[2].getCoords() == c);
+}
+
+TEST_CASE("test noOverlap() and setCoords()", "[Player.noOverlap]") {
+	Player p = Player(true);
+	auto ships = p.getShips();
+	p.getShips()[2].setStartCoord(std::make_pair(2, 2));
+	p.getShips()[2].setCoords({ std::make_pair(2,2), std::make_pair(2,3), std::make_pair(2,4) });
+	REQUIRE(p.noOverlap(std::make_pair(2, 5), 'N', ships[3]) == false);
+}
+
+
+
+//need to write test for placeShips() but not sure how you deal with cin input in catch... 
