@@ -94,7 +94,7 @@ TEST_CASE("test noOverlap()", "[Player.noOverlap]") {
 	std::vector<std::pair<int, int>> c = { std::make_pair(2,2), std::make_pair(2,3), std::make_pair(2,4) };
 	e.setShipStartCoord(1, 2, c[0]);
 	e.setShipCoords(1, 2, c);
-	
+	//this should overlap at (2,3) and (2, 4), and so e.noOverlap(...) should return false
 	REQUIRE(e.noOverlap(1, std::make_pair(2, 5), 'N', 3) == false);
 }
 

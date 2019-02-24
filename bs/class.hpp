@@ -5,11 +5,10 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <sstream>
 
 #ifndef FILE_CLASS_HPP
 #define FILE_CLASS_HPP
-
-
 
 ///////////////////
 //  SHIP CLASS   // 
@@ -80,7 +79,6 @@ public:
 
 	void setCoords(const std::vector<std::pair<int, int>> &coords) {
 		_coords = coords;
-		std::cout << coords[0].first << std::endl; //////////////////////////////////debugging
 	}
 
 	std::string getName() {
@@ -167,35 +165,44 @@ public:
 
 	void placeShips() {
 		for (auto ship = 0; ship < _ships.size(); ship++) {
-			int x;
-			int y;
-			char dir;
+			int x = -1;
+			int y = -1;
+			char dir = 'Z';
+			std::string str;
 			while (true) {
 				//enter a start x coord
+				
 				while (!std::cin || x < 0 || x > 9) {
 					std::cout << "Please enter the x coordinate at which to place the starting end of your " << _ships[ship].getName() << std::endl;
-					std::cin >> x;
+					std::getline(std::cin, str);
+					std::stringstream(str) >> x;
 				}
 				//enter a start y coord
 				while (!std::cin || y < 0 || y > 9) {
 					std::cout << "\nPlease enter the y coordinate at which to place the starting end of your " << _ships[ship].getName() << std::endl;
-					std::cin >> y;
+					std::getline(std::cin, str);
+					std::stringstream(str) >> y;
 				}
 				//enter a direction
-				while (!std::cin || (dir != 'N' || dir != 'S' || dir != 'E' || dir != 'W')) {
+				while (!std::cin || (dir != 'N' && dir != 'S' && dir != 'E' && dir != 'W')) {
 					std::cout << "\nPlease enter the direction in which to extend the ship from your start coordinate." << std::endl;
-					std::cin >> dir;
+					std::getline(std::cin, str);
+					std::stringstream(str) >> dir;
 				}
 				std::pair<int, int> startCoord = std::make_pair(x, y);
 				//confirm that you aren't placing on top of an existing ship, and place it.
 				if (noOverlap(startCoord, dir, ship)) {
 					_ships[ship].setStartCoord(startCoord);
-					_ships[ship].setDirection(dir);
+					_ships[ship].setCoords(_ships[ship].gencoords(startCoord, dir, _ships[ship].getLen()));
+					break;
 				}
 				//Bad placement. Try again 
 				else {
-					std::cout << "The placement you requested is invalid. No part of 2 or more ships may not occupy the same location." << std::endl;
+					std::cout << "The placement you requested is invalid. No part of 2 or more ships may occupy the same location." << std::endl;
 					std::cout << "Please try again." << std::endl;
+					x = -1;
+					y = -1;
+					dir = 'Z';
 				}
 			}//end while loop
 		}
