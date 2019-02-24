@@ -28,22 +28,42 @@ public:
 			switch (dir) {
 			case 'N':
 				for (auto i = 0; i < length; ++i) {
-					coords.push_back(std::make_pair(startCoord.first, startCoord.second - i));
+					if (startCoord.second - length + 1 > -1) {
+						coords.push_back(std::make_pair(startCoord.first, startCoord.second - i));
+					}
+					else {
+						return { std::make_pair(-1, -1) };
+					}
 				}
 				break;
 			case 'S':
 				for (auto i = 0; i < length; ++i) {
-					coords.push_back(std::make_pair(startCoord.first, startCoord.second + i));
+					if (startCoord.second + length - 1 > 9) {
+						coords.push_back(std::make_pair(startCoord.first, startCoord.second + i));
+					}
+					else {
+						return { std::make_pair(-1, -1) };
+					}
 				}
 				break;
 			case 'E':
 				for (auto i = 0; i < length; ++i) {
-					coords.push_back(std::make_pair(startCoord.first + i, startCoord.second));
+					if (startCoord.first + length - 1 > 9) {
+						coords.push_back(std::make_pair(startCoord.first + i, startCoord.first));
+					}
+					else {
+						return { std::make_pair(-1, -1) };
+					}
 				}
 				break;
 			case 'W':
 				for (auto i = 0; i < length; ++i) {
-					coords.push_back(std::make_pair(startCoord.first - i, startCoord.second));
+					if (startCoord.first - length + 1 > 9) {
+						coords.push_back(std::make_pair(startCoord.first - i, startCoord.first));
+					}
+					else {
+						return { std::make_pair(-1, -1) };
+					}
 				}
 				break;
 			}
@@ -155,6 +175,7 @@ public:
 		
 	}
 
+	//Adds the coords of a hit to a player's vector of hit coords
 	void addToHitList(const std::pair<int, int> &coord) {
 		_hitList.push_back(coord);
 	}
@@ -179,6 +200,12 @@ public:
 			}
 		}
 		return true;
+	}
+
+	//Prints message if you hang a ship off the edge of the board.
+	void hangShipMsg() const {
+		std::cout << "A ship may not hang off the side of the board." << std::endl;
+		std::cout << "Please try again." << std::endl;
 	}
 
 	void placeShips() {
@@ -212,16 +239,26 @@ public:
 				if (noOverlap(startCoord, dir, ship)) {
 					_ships[ship].setStartCoord(startCoord);
 					_ships[ship].setCoords(_ships[ship].gencoords(startCoord, dir, _ships[ship].getLen()));
-					break;
+					if (_ships[ship].getCoords()[0].first == -1) {
+						hangShipMsg();
+						x = -1;
+						y = -1;
+						dir = 'Z';
+						continue;
+					}
+					else {
+						break;
+					}
 				}
 				//Bad placement. Try again 
-				else {
+				else { //(_ships[ship].getCoords()[0].first != -1) {
 					std::cout << "The placement you requested is invalid. No part of 2 or more ships may occupy the same location." << std::endl;
 					std::cout << "Please try again." << std::endl;
 					x = -1;
 					y = -1;
 					dir = 'Z';
 				}
+				
 			}//end while loop
 		}
 	}
