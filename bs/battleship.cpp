@@ -13,52 +13,51 @@ using std::vector;
 
 
 
-
-
-
-
-
-static int WIN_WIDTH = 1000;
-
 int main(){
 	//Create environment object, which owns 2 players who, in turn, own their fleets of ships
-	Environment environment = Environment();
+	Environment e = Environment();
 
-	//need to add board setup here. Players place ships.
+	//Place each player's ships
+	e.placePlayerShips(1);
+	e.placePlayerShips(2);
 
 	//start game loop
 	while(true){
 
 		// if someone wins
-		if (environment.win() == 1 || environment.win() == 2) {
+		if (e.win() == 1 || e.win() == 2) {
 			break;
 		}
 
+		
 		// if player1 turn
-		if (environment.getPlayer1()->getTurn()) {
-			environment.getPlayer1()->go();
+		if (e.getPlayer1()->getTurn()) {
+			e.go(1); //hit or miss message delivered in Player.checkHit(), scores updated in Player.directHit()
+			std::cout << "Press any key when you are ready to pass the computer." << std::endl;
+			std::cin;
+			std::cin.clear();
+			//*************swap screens here ***************
 		}
 
 		//else player2 turn
 		else {
-			environment.getPlayer2()->go();
+			e.go(2); //hit or miss message delivered in Player.hit()
+			std::cout << "Press any key when you are ready to pass the computer." << std::endl;
+			std::cin;
+			std::cin.clear();
+			//*************swap screens here ***************
 		}
 
 		//Turn Swap
-		if (environment.getPlayer1()->getTurn()) {
-			environment.getPlayer1()->setTurn(false);
-			environment.getPlayer2()->setTurn(true);
-		}
-		else {
-			environment.getPlayer1()->setTurn(true);
-			environment.getPlayer2()->setTurn(false);
-		}
+		e.changeTurn();
 	}
-	if (environment.win() == 1) {
-		//announce player1 wins
+	//end game loop
+
+	if (e.win() == 1) {
+		std::cout << "Player 1 wins!" << std::endl;
 	}
 	else {
-		//congrats player2
+		std::cout << "Player 2 wins!" << std::endl;
 	}
 
 	return 0;
