@@ -84,20 +84,19 @@ TEST_CASE("confirm Player.directHit() changes the player1 and player2 ._score, a
 }
 
 TEST_CASE("test Ship.setCoords()", "[Ship.setCoords]") {
-	Environment e = Environment();
-	auto ships = e.getPlayer1()->getShips();
-	e.getPlayer1()->getShips()[2].setCoords({ std::make_pair(2,2), std::make_pair(2,3), std::make_pair(2,4) });
 	std::vector<std::pair<int, int>> c{ std::make_pair(2, 2), std::make_pair(2, 3), std::make_pair(2, 4) };
+	Environment e = Environment();
+	e.getPlayer1()->getShips()[2].setCoords(c);
 	REQUIRE(e.getPlayer1()->getShips()[2].getCoords() == c);
 }
-
-TEST_CASE("test noOverlap() and setCoords()", "[Player.noOverlap]") {
-	Player p = Player(true);
-	auto ships = p.getShips();
-	p.getShips()[2].setStartCoord(std::make_pair(2, 2));
-	p.getShips()[2].setCoords({ std::make_pair(2,2), std::make_pair(2,3), std::make_pair(2,4) });
-	REQUIRE(p.noOverlap(std::make_pair(2, 5), 'N', ships[3]) == false);
-}
+//
+//TEST_CASE("test noOverlap()", "[Player.noOverlap]") {
+//	Player p = Player(true);
+//	auto ships = p.getShips();
+//	p.getShips()[2].setStartCoord(std::make_pair(2, 2));
+//	p.getShips()[2].setCoords({ std::make_pair(2,2), std::make_pair(2,3), std::make_pair(2,4) });
+//	REQUIRE(p.noOverlap(std::make_pair(2, 5), 'N', ships[3]) == false);
+//}
 
 
 
