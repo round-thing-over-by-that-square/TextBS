@@ -18,8 +18,8 @@ int main(){
 	Environment e = Environment();
 
 	//Place each player's ships
-	e.getPlayer1()->placeShips();
-	e.getPlayer2()->placeShips();
+	e.placePlayerShips(1);
+	e.placePlayerShips(2);
 
 	//start game loop
 	while(true){

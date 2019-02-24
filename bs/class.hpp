@@ -294,6 +294,15 @@ public:
 		}
 	}
 
+	void placePlayerShips(int player) {
+		if (player == 1) {
+			_player1.placeShips();
+		}
+		else if (player == 2) {
+			_player2.placeShips();
+		}
+	}
+
 	//Lob a bomb.
 	void go(int player) {
 		std::string str;
