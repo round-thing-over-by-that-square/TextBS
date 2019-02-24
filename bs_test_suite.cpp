@@ -46,7 +46,7 @@ TEST_CASE("return the correct vector of coords, West", "[s.getcoords]") {
 }
 
 TEST_CASE("player.ships[i].getLen()", "[p.player.ships[i].getLen]") {
-	Player p = Player(true);
+	Player p = Player(true, 1);
 	REQUIRE(p.getShips()[0].getLen() == 5);
 	REQUIRE(p.getShips()[1].getLen() == 4);
 	REQUIRE(p.getShips()[2].getLen() == 3);
@@ -96,6 +96,10 @@ TEST_CASE("test noOverlap()", "[Player.noOverlap]") {
 	e.setShipCoords(1, 2, c);
 	//this should overlap at (2,3) and (2, 4), and so e.noOverlap(...) should return false
 	REQUIRE(e.noOverlap(1, std::make_pair(2, 5), 'N', 3) == false);
+
+	//test Player.hit()
+	REQUIRE(e.getPlayer1()->hit(std::make_pair(2, 4)) == std::make_pair(2, 4));
+	REQUIRE(e.getPlayer1()->hit(std::make_pair(1, 2)) == std::make_pair(-1, -1));
 }
 
 

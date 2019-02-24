@@ -103,7 +103,7 @@ private:
 class Player
 {
 public:
-	Player(bool turn) :_turn{ turn }{}
+	Player(bool turn, int name) :_turn{ turn }, _name{ name }{}
 
 	//Start getters and setters
 	std::vector<Ship> getShips() {
@@ -135,6 +135,21 @@ public:
 		_score = _score + 1;
 	}
 	//end setters and getterss
+
+	//determines if an enemy bomb has hit any of your ships
+	//takes a coordinate
+	//returns the coordinate of a hit or (-1, -1) if there are none.
+	std::pair<int, int> hit(std::pair<int, int> coord) {
+		for (auto ship : _ships) {
+			for (auto c : ship.getCoords()) {
+				if (coord == c) {
+					return coord;
+				}
+			}
+		}
+		return std::make_pair(-1, -1);
+		
+	}
 
 	//Lob a bomb.
 	void go() {
@@ -211,6 +226,7 @@ public:
 private:
 	int _score = 0;
 	bool _turn;
+	int _name;
 
 	// ships[0] = Carrier: length 5
 	// ships[1] = Battleship: length 4
@@ -319,8 +335,8 @@ public:
 		
 
 private:
-	Player _player1 = Player(true);
-	Player _player2 = Player(false);
+	Player _player1 = Player(true, 1);
+	Player _player2 = Player(false, 2);
 };
 
 #endif FILE_CLASS_HPP
