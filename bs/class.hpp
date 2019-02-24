@@ -3,7 +3,10 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include <memory>
+#include <iostream>
+using std::vector;
+using std::cout;
+using std::endl;
 
 
 #ifndef FILE_CLASS_HPP
@@ -12,16 +15,16 @@
 
 
 ///////////////////
-//  SHIP CLASS   // 
+//  SHIP CLASS   //
 ///////////////////
 
 class Ship
 {
 public:
 	Ship(int length, std::pair<int, int> start, char d) : _length{ length }, _startcoord{ start }, _direction{ d }{};
-	
 
- 
+
+
 	void gencoords() {
 		switch (_direction) {
 		case 'N':
@@ -46,7 +49,7 @@ public:
 			break;
 		}
 	}
-	
+
 	std::vector<std::pair<int, int>> getCoords() {
 		return _coords;
 	}
@@ -67,15 +70,13 @@ private:
 };
 
 /////////////////////
-//  PLAYER CLASS   // 
+//  PLAYER CLASS   //
 /////////////////////
 
 class Player
 {
 public:
-	Player(bool turn) :_turn{ turn }{}
-
-	//Start getters and setters
+	//getters and setters
 	std::vector<Ship> getShips() {
 		return _ships;
 	}
@@ -84,27 +85,20 @@ public:
 		return _turn;
 	}
 
-	void setTurn(bool turn) {
+	void setTurn(int turn) {
 		_turn = turn;
 	}
-	
+
 	int getScore() {
 		return _score;
 	}
-	//this is a setter, setScore() with a Battleshipy name 
+	//this is a setter, setScore() with a Battleshipy name
 	void directHit() {
-		_score = _score + 1;
+		_score++;
 	}
-	//end setters and getterss
-
-	//Lob a bomb.
-	void go() {
-		// need to write
-	}
-
 private:
 	int _score = 0;
-	bool _turn;
+	bool _turn = false;
 
 	// ships[0] = Carrier: length 5
 	// ships[1] = Battleship: length 4
@@ -121,63 +115,40 @@ private:
 };
 
 //////////////////////////
-//  ENVIRONMENT CLASS   // 
+//  ENVIRONMENT CLASS   //
 //////////////////////////
 
 class Environment
 {
 public:
-	
-	//returns a unique_ptr to player1
-	std::unique_ptr<Player> getPlayer1() {
-		return std::make_unique<Player>(_player1);
-	}			
-	//returns a unique_ptr to player2
-	std::unique_ptr<Player> getPlayer2() { 
-		return std::make_unique<Player>(_player2);
+	//pass in players by reference bc the Environment controls everything. Don't need to pass ships bc the players bring thier own.
+	Environment(Player &player1, Player &player2){
+
 	}
 
-	//Swaps turns. Called from main
-	void changeTurn() {
-		if (_player1.getTurn() == true) {
-			_player1.setTurn(false);
-			_player2.setTurn(true);
-		}
-		else {
-			_player1.setTurn(true);
-			_player2.setTurn(false);
-		}
-	}
-
-	//Adjusts Player's score when they receive a direct hit.
-	// Takes an int, 1 if player1 hit, 2 if player2 hit.
-	void directHit(int playerNumber) {
-		if (playerNumber == 1) {
-			_player1.directHit();
-		}
-		else if (playerNumber == 2) {
-			_player2.directHit();
-		}
+	// We only need this for testing, I think, at least so far. Comment out later. *****************************************
+	Player getPlayer1() {
+		return _player1;
 	}
 
 
 	//Anyone win yet?
 	int win() {
 		if (_player1.getScore() >= 17){
-			return 2; //player1 looses, all their their ships are sunk
+			return 1; //player1 looses, all their their ships are sunk
 		}
 		else if (_player2.getScore() >= 17) {
-			return 1; //player2 looses.
+			return 2; //player2 looses.
 		}
 		else {
 			return 0; //still in play
 		}
 	}
-		
+
 
 private:
-	Player _player1 = Player(true);
-	Player _player2 = Player(false);
+	Player _player1 = Player();
+	Player _player2 = Player();
 };
 
 #endif FILE_CLASS_HPP
