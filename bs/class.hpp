@@ -119,6 +119,12 @@ public:
 	void setTurn(bool turn) {
 		_turn = turn;
 	}
+
+	////takes the index of the ship whose coords you are setting from _ships
+	void setShipCoords(int ship, const std::vector<std::pair<int, int>> &coords) {
+		_ships[ship].setCoords(coords);
+	}
+
 	
 	int getScore() {
 		return _score;
@@ -218,6 +224,25 @@ class Environment
 {
 public:
 	
+	//takes the index of the ship whose coords you are setting from _ships
+	void setShipCoords(int player, int ship, const std::vector<std::pair<int, int>> &coords) {
+		if (player == 1) {
+			_player1.setShipCoords(ship, coords);
+		}
+		else if (player == 2) {
+			_player2.setShipCoords(ship, coords);
+		}
+	}
+
+	void setPlayerTurn(int player, bool turn) {
+		if (player == 1) {
+			_player1.setTurn(turn);
+		}
+		else if (player == 2) {
+			_player2.setTurn(turn);
+		}
+	}
+
 	//returns a unique_ptr to player1
 	std::unique_ptr<Player> getPlayer1() {
 		return std::make_unique<Player>(_player1);

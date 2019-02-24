@@ -55,12 +55,11 @@ TEST_CASE("player.ships[i].getLen()", "[p.player.ships[i].getLen]") {
 }
 
 TEST_CASE("Player.setTurn()", "[p.player.setTurn]") {
-	Player p1 = Player(true);
-	Player p2 = Player(false);
-	p1.setTurn(false);
-	p2.setTurn(true);
-	REQUIRE(p1.getTurn() == false);
-	REQUIRE(p2.getTurn() == true);
+	Environment e = Environment();
+	e.setPlayerTurn(1, false);
+	e.setPlayerTurn(2, true);
+	REQUIRE(e.getPlayer1()->getTurn() == false);
+	REQUIRE(e.getPlayer2()->getTurn() == true);
 }
 
 TEST_CASE("confirm Player.changeTurn() changes the player1 and player2 ._turn", "[Player.changeTurn]") {
@@ -86,7 +85,7 @@ TEST_CASE("confirm Player.directHit() changes the player1 and player2 ._score, a
 TEST_CASE("test Ship.setCoords()", "[Ship.setCoords]") {
 	std::vector<std::pair<int, int>> c{ std::make_pair(2, 2), std::make_pair(2, 3), std::make_pair(2, 4) };
 	Environment e = Environment();
-	e.getPlayer1()->getShips()[2].setCoords(c);
+	e.setShipCoords(1, 2, c);
 	REQUIRE(e.getPlayer1()->getShips()[2].getCoords() == c);
 }
 //
