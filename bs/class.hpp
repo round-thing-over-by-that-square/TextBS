@@ -118,7 +118,7 @@ public:
 		_turn = turn;
 	}
 
-	////takes the index of the ship whose coords you are setting from _ships
+	//takes the index of the ship whose coords you are setting from _ships
 	void setShipCoords(int ship, const std::vector<std::pair<int, int>> &coords) {
 		_ships[ship].setCoords(coords);
 	}
@@ -130,6 +130,7 @@ public:
 	int getScore() {
 		return _score;
 	}
+
 	//this is a setter, setScore() with a Battleshipy name 
 	void directHit() {
 		_score = _score + 1;
@@ -151,10 +152,7 @@ public:
 		
 	}
 
-	//Lob a bomb.
-	void go() {
-		// need to write
-	}
+	
 
 	//Returns true if you are not attempting to place one ship on top of another, else returns false
 	bool noOverlap(std::pair<int, int> startCoord, char dir, int ship) {
@@ -260,6 +258,7 @@ public:
 		}
 	}
 
+	//calls _player1 and _player2's setShipStartCoord() functions
 	void setShipStartCoord(int player, int ship, const std::pair<int, int> &coord) {
 		if (player == 1) {
 			_player1.setStartCoord(ship, coord);
@@ -268,7 +267,7 @@ public:
 			_player2.setStartCoord(ship, coord);
 		}
 	}
-
+	//calls _player1 and _player2's setTurn() functions
 	void setPlayerTurn(int player, bool turn) {
 		if (player == 1) {
 			_player1.setTurn(turn);
@@ -278,6 +277,8 @@ public:
 		}
 	}
 
+	// calls _player1 and _player2's noOverlap() function,
+	// which returns true if you aren't stacking one ship on another.
 	bool noOverlap(int player, std::pair<int, int> startCoord, char dir, int ship) {
 		if (player == 1) {
 			return _player1.noOverlap(startCoord, dir, ship);
@@ -285,6 +286,11 @@ public:
 		else if (player == 2) {
 			return _player2.noOverlap(startCoord, dir, ship);
 		}
+	}
+
+	//Lob a bomb.
+	void go() {
+		// need to write
 	}
 
 	//returns a unique_ptr to player1
