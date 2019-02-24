@@ -98,10 +98,12 @@ TEST_CASE("test noOverlap()", "[Player.noOverlap]") {
 	REQUIRE(e.noOverlap(1, std::make_pair(2, 5), 'N', 3) == false);
 
 	//test Player.hit()
-	REQUIRE(e.getPlayer1()->hit(std::make_pair(2, 4)) == std::make_pair(2, 4));
-	REQUIRE(e.getPlayer1()->hit(std::make_pair(1, 2)) == std::make_pair(-1, -1));
+	REQUIRE(e.getPlayer1()->checkHit(std::make_pair(2, 4)) == std::make_pair(2, 4));
+	REQUIRE(e.getPlayer1()->checkHit(std::make_pair(1, 2)) == std::make_pair(-1, -1));
+
+	
 }
 
 
 
-//need to write test for placeShips() but not sure how you deal with cin input in catch... 
+//need to write tests for placeShips() and go() but not sure how you deal with cin input in catch... 

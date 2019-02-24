@@ -134,25 +134,30 @@ public:
 	//this is a setter, setScore() with a Battleshipy name 
 	void directHit() {
 		_score = _score + 1;
+		
 	}
 	//end setters and getterss
 
 	//determines if an enemy bomb has hit any of your ships
 	//takes a coordinate
 	//returns the coordinate of a hit or (-1, -1) if there are none.
-	std::pair<int, int> hit(std::pair<int, int> coord) {
+	std::pair<int, int> checkHit(std::pair<int, int> coord) {
 		for (auto ship : _ships) {
 			for (auto c : ship.getCoords()) {
 				if (coord == c) {
+					std::cout << "You made a direct hit!" << std::endl;
 					return coord;
 				}
 			}
 		}
+		std::cout << "Better luck next time." << std::endl;
 		return std::make_pair(-1, -1);
 		
 	}
 
-	
+	void addToHitList(const std::pair<int, int> &coord) {
+		_hitList.push_back(coord);
+	}
 
 	//Returns true if you are not attempting to place one ship on top of another, else returns false
 	bool noOverlap(std::pair<int, int> startCoord, char dir, int ship) {
@@ -225,6 +230,7 @@ private:
 	int _score = 0;
 	bool _turn;
 	int _name;
+	std::vector<std::pair<int, int>> _hitList;
 
 	// ships[0] = Carrier: length 5
 	// ships[1] = Battleship: length 4
@@ -289,8 +295,32 @@ public:
 	}
 
 	//Lob a bomb.
-	void go() {
-		// need to write
+	void go(int player) {
+		std::string str;
+		int x;
+		int y;
+		std::cout << "Enter your targets x coordinate." << std::endl;
+		std::getline(std::cin, str);
+		std::stringstream(str) >> x;
+		std::cout << "Enter your targets y coordinate." << std::endl;
+		std::getline(std::cin, str);
+		std::stringstream(str) >> y;
+		if (player == 1) {
+			//Player.hit() returns coords of a hit or (-1, 1)
+			if (_player2.checkHit(std::make_pair(x, y)) != std::make_pair(-1, -1)) {
+				//  ***********do something to indicate a hit on the ascii board here************
+				_player2.directHit();
+				_player2.addToHitList(_player2.checkHit(std::make_pair(x, y)));
+			}
+		}
+		else if (player == 2) {
+			//Player.hit() returns coords of a hit or (-1, 1)
+			if (_player1.checkHit(std::make_pair(x, y)) != std::make_pair(-1, -1)) {
+				//  ***********do something to indicate a hit on the ascii board here************
+				_player1.directHit();
+				_player1.addToHitList(_player1.checkHit(std::make_pair(x, y)));
+			}
+		}
 	}
 
 	//returns a unique_ptr to player1

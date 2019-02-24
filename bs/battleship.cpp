@@ -29,14 +29,23 @@ int main(){
 			break;
 		}
 
+		
 		// if player1 turn
 		if (e.getPlayer1()->getTurn()) {
-			e.getPlayer1()->go();
+			e.go(1); //hit or miss message delivered in Player.checkHit(), scores updated in Player.directHit()
+			std::cout << "Press any key when you are ready to pass the computer." << std::endl;
+			std::cin;
+			std::cin.clear();
+			//*************swap screens here ***************
 		}
 
 		//else player2 turn
 		else {
-			e.getPlayer2()->go();
+			e.go(2); //hit or miss message delivered in Player.hit()
+			std::cout << "Press any key when you are ready to pass the computer." << std::endl;
+			std::cin;
+			std::cin.clear();
+			//*************swap screens here ***************
 		}
 
 		//Turn Swap
@@ -45,10 +54,10 @@ int main(){
 	//end game loop
 
 	if (e.win() == 1) {
-		//announce player1 wins
+		std::cout << "Player 1 wins!" << std::endl;
 	}
 	else {
-		//congrats player2
+		std::cout << "Player 2 wins!" << std::endl;
 	}
 
 	return 0;
