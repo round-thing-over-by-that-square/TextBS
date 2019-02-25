@@ -133,6 +133,7 @@ public:
                 newvec.push_back('.');
             }
             _playerboard.push_back(newvec);
+            _opponentboard.push_back(newvec);
         }
     }
 
@@ -170,13 +171,35 @@ public:
                 break;
         }
     }
+    void printopponent(){
+        std::cout<<std::endl<<"Opponent:"<<std::endl<<std::endl;
+        for (const auto &i : _opponentboard){
+            for (auto j: i){
+                std::cout<<j<<" ";
+            }
+            std::cout<<std::endl;
+        }
+    }
     void printboard(){          //prints out the board's current state
+        std::cout<<std::endl<<"Player:"<<std::endl<<std::endl;
         for (const auto &i : _playerboard){
             for (auto j: i){
                 std::cout<<j<<" ";
             }
             std::cout<<std::endl;
         }
+    }
+
+    void setplayerhit(std::pair<int, int> p){                   //Updates player board hit
+        _playerboard[std::get<1>(p)][std::get<0>(p)] = 'X';
+    }
+
+    void setopphit(std::pair<int, int> p){                      //Updates opponent board hit
+        _opponentboard[std::get<1>(p)][std::get<0>(p)] = 'X';
+    }
+
+    void setoppmiss(std::pair<int, int> p){                     //Updates opponent board miss
+        _opponentboard[std::get<1>(p)][std::get<0>(p)] = '~';
     }
 
     //Start getters and setters
@@ -229,7 +252,6 @@ public:
         return std::make_pair(-1, -1);
 
     }
-
     //Adds the coords of a hit to a player's vector of hit coords
     void addToHitList(const std::pair<int, int> &coord) {
         _hitList.push_back(coord);
@@ -332,6 +354,7 @@ private:
     int _name;
     std::vector<std::pair<int, int>> _hitList;
     std::vector<std::vector<char>> _playerboard;
+    std::vector<std::vector<char>> _opponentboard;
     // ships[0] = Carrier: length 5
     // ships[1] = Battleship: length 4
     // ships[2] = Crusier: length 3
@@ -408,26 +431,40 @@ public:
         std::string str;
         int x;
         int y;
+        if(player == 1){
+            _player1.printopponent();
+            _player1.printboard();
+        } else {
+            _player2.printopponent();
+            _player2.printboard();
+        }
         std::cout << "Enter your targets x coordinate." << std::endl;
         std::getline(std::cin, str);
         std::stringstream(str) >> x;
         std::cout << "Enter your targets y coordinate." << std::endl;
         std::getline(std::cin, str);
         std::stringstream(str) >> y;
+        std::pair<int, int> p = std::make_pair(x, y);
         if (player == 1) {
             //Player.hit() returns coords of a hit or (-1, 1)
             if (_player2.checkHit(std::make_pair(x, y)) != std::make_pair(-1, -1)) {
-                //  ***********do something to indicate a hit on the ascii board here************
+                _player1.setopphit(p);
+                _player2.setplayerhit(p);
                 _player2.directHit();
-                _player2.addToHitList(_player2.checkHit(std::make_pair(x, y)));
+                _player2.addToHitList(_player2.checkHit(p));
+            } else {
+                _player1.setoppmiss(p);
             }
         }
         else if (player == 2) {
             //Player.hit() returns coords of a hit or (-1, 1)
             if (_player1.checkHit(std::make_pair(x, y)) != std::make_pair(-1, -1)) {
-                //  ***********do something to indicate a hit on the ascii board here************
+                _player2.setopphit(p);
+                _player1.setplayerhit(p);
                 _player1.directHit();
-                _player1.addToHitList(_player1.checkHit(std::make_pair(x, y)));
+                _player1.addToHitList(_player1.checkHit(p));
+            } else {
+                _player2.setoppmiss(p);
             }
         }
     }
