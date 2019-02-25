@@ -126,7 +126,39 @@ class Player
 {
 public:
 
-    Player(bool turn, int name) :_turn{ turn }, _name{ name }{}
+    Player(bool turn, int name) :_turn{ turn }, _name{ name }{
+        for(int i = 0; i < 10; ++i){
+            std::vector<char> newvec;
+            for(int j = 0; j < 10; ++j){
+                newvec.push_back('.');
+            }
+            _playerboard.push_back(newvec);
+        }
+    }
+
+    void addshipboard() {          //Adds the ships to the board
+        for (const auto &i : _ships) {
+            if (i.getDirection() != 'Z') {
+                std::pair<int, int> start = i.getStartCoord();
+                switch (i.getDirection()) {
+                    case 'N':
+                        _playerboard[std::get<1>(start)][std::get<0>(start)] = 'V';
+                        for (int j = 1; j < i.getLen(); ++j) {
+                            _playerboard[std::get<1>(start) - j][std::get<0>(start)] = '|';
+                        }
+                        _playerboard[std::get<1>(start) - i.getLen()][std::get<0>(start)] = 'A';
+                }
+            }
+        }
+    }
+    void printboard(){          //prints out the board's current state
+        for (const auto &i : _playerboard){
+            for (auto j: i){
+                std::cout<<j<<" ";
+            }
+            std::cout<<std::endl;
+        }
+    }
 
     //Start getters and setters
     std::vector<Ship> getShips() {
@@ -225,22 +257,26 @@ public:
                     std::cout << "Please enter the x coordinate at which to place the starting end of your " << _ships[ship].getName() << std::endl;
                     std::getline(std::cin, str);
                     std::stringstream(str) >> x;
-					std::cin.clear();
+                    std::cin.clear();
                 }
                 //enter a start y coord
                 while (!std::cin || y < 0 || y > 9) {
                     std::cout << "\nPlease enter the y coordinate at which to place the starting end of your " << _ships[ship].getName() << std::endl;
                     std::getline(std::cin, str);
                     std::stringstream(str) >> y;
-					std::cin.clear();
+                    std::cin.clear();
                 }
                 //enter a direction
-                while (!std::cin || (dir != 'N' && dir != 'S' && dir != 'E' && dir != 'W')) {
+                while ((dir != 'N' && dir != 'S' && dir != 'E' && dir != 'W')) {
                     std::cout << "\nPlease enter the direction in which to extend the ship from your start coordinate." << std::endl;
                     std::getline(std::cin, str);
-                    std::stringstream(str) >> dir;
-					std::cin.clear();
+                    std::string r;
+                    std::stringstream(str) >> r;
+                    dir = r[0];
+                    std::cin.clear();
                 }
+
+
                 std::pair<int, int> startCoord = std::make_pair(x, y);
                 //confirm that you aren't placing a ship on top of an existing ship.
                 if (noOverlap(startCoord, dir, ship)) {
@@ -254,6 +290,8 @@ public:
                         continue;
                     }
                     else {
+                        addshipboard();
+                        printboard();
                         break;
                     }
                 }
@@ -274,7 +312,7 @@ private:
     bool _turn;
     int _name;
     std::vector<std::pair<int, int>> _hitList;
-
+    std::vector<std::vector<char>> _playerboard;
     // ships[0] = Carrier: length 5
     // ships[1] = Battleship: length 4
     // ships[2] = Crusier: length 3
@@ -297,39 +335,6 @@ class Environment
 {
 public:
 
-    Environment(){          //initializes the board
-        for(int i = 0; i < 10; ++i){
-            std::vector<char> newvec;
-            for(int j = 0; j < 10; ++j){
-                newvec.push_back('.');
-            }
-            _playerboard.push_back(newvec);
-        }
-    }
-
-    void printboard(int player){          //prints out the board's current state
-        std::vector<Ship> S;
-        if (player == 1){
-            S = _player1.getShips();
-        } else {
-            S = _player2.getShips();
-        }
-        /*
-        for (auto i : S){
-            if (i.getDirection() != 'Z'){
-                std::pair<int, int> start = i.getStartCoord();
-                switch(i.getDirection()){
-                    case 'N': _playerboard[std::get<1>(start)][std::get<0>(start)] = 'V';
-                }
-            }
-        }*/
-        for (const auto &i : _playerboard){
-            for (auto j: i){
-                std::cout<<j<<" ";
-            }
-            std::cout<<std::endl;
-        }
-    }
     //takes the index of the ship whose coords you are setting from _ships
     void setShipCoords(int player, int ship, const std::vector<std::pair<int, int>> &coords) {
         if (player == 1) {
@@ -421,7 +426,7 @@ public:
 
     // We only need this for testing, I think, at least so far. Comment out later. *****************************************
     //Player getPlayer1() {
-      //  return _player1;
+    //  return _player1;
     //}
 
 
@@ -442,7 +447,6 @@ public:
 private:
     Player _player1 = Player(true, 1);
     Player _player2 = Player(false, 2);
-    std::vector<std::vector<char>> _playerboard;
 };
 
 #endif FILE_CLASS_HPP
