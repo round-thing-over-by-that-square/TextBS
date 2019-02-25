@@ -143,31 +143,31 @@ public:
         switch (dir) {
             case 'N':
                 _playerboard[std::get<1>(start)][std::get<0>(start)] = 'V';
-                for (int j = 1; j < i.getLen(); ++j) {
+                for (int j = 1; j < i.getLen()-1; ++j) {
                     _playerboard[std::get<1>(start) - j][std::get<0>(start)] = '|';
                 }
-                _playerboard[std::get<1>(start) - i.getLen()][std::get<0>(start)] = 'A';
+                _playerboard[std::get<1>(start) - i.getLen()+1][std::get<0>(start)] = 'A';
                 break;
             case 'S':
                 _playerboard[std::get<1>(start)][std::get<0>(start)] = 'A';
-                for (int j = 1; j < i.getLen(); ++j) {
+                for (int j = 1; j < i.getLen()-1; ++j) {
                     _playerboard[std::get<1>(start) + j][std::get<0>(start)] = '|';
                 }
-                _playerboard[std::get<1>(start) + i.getLen()][std::get<0>(start)] = 'V';
+                _playerboard[std::get<1>(start) + i.getLen()-1][std::get<0>(start)] = 'V';
                 break;
             case 'E':
                 _playerboard[std::get<1>(start)][std::get<0>(start)] = '<';
-                for (int j = 1; j < i.getLen(); ++j) {
+                for (int j = 1; j < i.getLen()-1; ++j) {
                     _playerboard[std::get<1>(start)][std::get<0>(start) + j] = '|';
                 }
-                _playerboard[std::get<1>(start)][std::get<0>(start) + i.getLen()] = '>';
+                _playerboard[std::get<1>(start)][std::get<0>(start) + i.getLen()-1] = '>';
                 break;
             case 'W':
                 _playerboard[std::get<1>(start)][std::get<0>(start)] = '}';
-                for (int j = 1; j < i.getLen(); ++j) {
+                for (int j = 1; j < i.getLen()-1; ++j) {
                     _playerboard[std::get<1>(start)][std::get<0>(start) - j] = '|';
                 }
-                _playerboard[std::get<1>(start)][std::get<0>(start) - i.getLen()] = '{';
+                _playerboard[std::get<1>(start)][std::get<0>(start) - i.getLen()+1] = '{';
                 break;
         }
     }
