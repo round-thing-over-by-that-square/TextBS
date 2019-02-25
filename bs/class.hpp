@@ -22,7 +22,6 @@ public:
 
 
     //generate coordinates for newly placed ship based on _direction and _startcoord
-    //Does not allow a ship to hang over the edge of the board, but doesn't handle placing a ship on top of another
     std::vector<std::pair<int, int>> gencoords(std::pair<int, int> startCoord, char dir, int length) const {
         std::vector<std::pair<int, int>> coords;
         if (startCoord.first != -1) {
@@ -39,7 +38,7 @@ public:
                     break;
                 case 'S':
                     for (auto i = 0; i < length; ++i) {
-                        if (startCoord.second + length - 1 > 9) {
+                        if (startCoord.second + length - 1 < 9) {
                             coords.push_back(std::make_pair(startCoord.first, startCoord.second + i));
                         }
                         else {
@@ -49,8 +48,8 @@ public:
                     break;
                 case 'E':
                     for (auto i = 0; i < length; ++i) {
-                        if (startCoord.first + length - 1 > 9) {
-                            coords.push_back(std::make_pair(startCoord.first + i, startCoord.first));
+                        if (startCoord.first + length - 1 < 9) {
+                            coords.push_back(std::make_pair(startCoord.first + i, startCoord.second));
                         }
                         else {
                             return { std::make_pair(-1, -1) };
@@ -59,7 +58,7 @@ public:
                     break;
                 case 'W':
                     for (auto i = 0; i < length; ++i) {
-                        if (startCoord.first - length + 1 > 9) {
+                        if (startCoord.first - length + 1 > -1) {
                             coords.push_back(std::make_pair(startCoord.first - i, startCoord.first));
                         }
                         else {
@@ -226,21 +225,24 @@ public:
                     std::cout << "Please enter the x coordinate at which to place the starting end of your " << _ships[ship].getName() << std::endl;
                     std::getline(std::cin, str);
                     std::stringstream(str) >> x;
+					std::cin.clear();
                 }
                 //enter a start y coord
                 while (!std::cin || y < 0 || y > 9) {
                     std::cout << "\nPlease enter the y coordinate at which to place the starting end of your " << _ships[ship].getName() << std::endl;
                     std::getline(std::cin, str);
                     std::stringstream(str) >> y;
+					std::cin.clear();
                 }
                 //enter a direction
                 while (!std::cin || (dir != 'N' && dir != 'S' && dir != 'E' && dir != 'W')) {
                     std::cout << "\nPlease enter the direction in which to extend the ship from your start coordinate." << std::endl;
                     std::getline(std::cin, str);
                     std::stringstream(str) >> dir;
+					std::cin.clear();
                 }
                 std::pair<int, int> startCoord = std::make_pair(x, y);
-                //confirm that you aren't placing on top of an existing ship, and place it.
+                //confirm that you aren't placing a ship on top of an existing ship.
                 if (noOverlap(startCoord, dir, ship)) {
                     _ships[ship].setStartCoord(startCoord);
                     _ships[ship].setCoords(_ships[ship].gencoords(startCoord, dir, _ships[ship].getLen()));

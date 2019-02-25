@@ -1,5 +1,5 @@
 //#include <SFML/Graphics.hpp>
-#include "..bs/class.hpp"
+#include "class.hpp" 
 
 #include <utility>
 using std::pair;
