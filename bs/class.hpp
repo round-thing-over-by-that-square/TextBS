@@ -136,19 +136,39 @@ public:
         }
     }
 
-    void addshipboard() {          //Adds the ships to the board
-        for (const auto &i : _ships) {
-            if (i.getDirection() != 'Z') {
-                std::pair<int, int> start = i.getStartCoord();
-                switch (i.getDirection()) {
-                    case 'N':
-                        _playerboard[std::get<1>(start)][std::get<0>(start)] = 'V';
-                        for (int j = 1; j < i.getLen(); ++j) {
-                            _playerboard[std::get<1>(start) - j][std::get<0>(start)] = '|';
-                        }
-                        _playerboard[std::get<1>(start) - i.getLen()][std::get<0>(start)] = 'A';
+    void addshipboard(Ship i) {          //Adds the ships to the board
+        char dir = i.getDirection();
+        std::cout<<"TEST"<<dir<<std::endl;
+        std::pair<int, int> start = i.getStartCoord();
+        switch (dir) {
+            case 'N':
+                _playerboard[std::get<1>(start)][std::get<0>(start)] = 'V';
+                for (int j = 1; j < i.getLen(); ++j) {
+                    _playerboard[std::get<1>(start) - j][std::get<0>(start)] = '|';
                 }
-            }
+                _playerboard[std::get<1>(start) - i.getLen()][std::get<0>(start)] = 'A';
+                break;
+            case 'S':
+                _playerboard[std::get<1>(start)][std::get<0>(start)] = 'A';
+                for (int j = 1; j < i.getLen(); ++j) {
+                    _playerboard[std::get<1>(start) + j][std::get<0>(start)] = '|';
+                }
+                _playerboard[std::get<1>(start) + i.getLen()][std::get<0>(start)] = 'V';
+                break;
+            case 'E':
+                _playerboard[std::get<1>(start)][std::get<0>(start)] = '<';
+                for (int j = 1; j < i.getLen(); ++j) {
+                    _playerboard[std::get<1>(start)][std::get<0>(start) + j] = '|';
+                }
+                _playerboard[std::get<1>(start)][std::get<0>(start) + i.getLen()] = '>';
+                break;
+            case 'W':
+                _playerboard[std::get<1>(start)][std::get<0>(start)] = '}';
+                for (int j = 1; j < i.getLen(); ++j) {
+                    _playerboard[std::get<1>(start)][std::get<0>(start) - j] = '|';
+                }
+                _playerboard[std::get<1>(start)][std::get<0>(start) - i.getLen()] = '{';
+                break;
         }
     }
     void printboard(){          //prints out the board's current state
@@ -276,7 +296,6 @@ public:
                     std::cin.clear();
                 }
 
-
                 std::pair<int, int> startCoord = std::make_pair(x, y);
                 //confirm that you aren't placing a ship on top of an existing ship.
                 if (noOverlap(startCoord, dir, ship)) {
@@ -290,7 +309,8 @@ public:
                         continue;
                     }
                     else {
-                        addshipboard();
+                        _ships[ship].setDirection(dir);
+                        addshipboard(_ships[ship]);
                         printboard();
                         break;
                     }
