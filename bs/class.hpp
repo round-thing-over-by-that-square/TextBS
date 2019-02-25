@@ -279,11 +279,11 @@ private:
     // ships[3] = Sub: length 3
     // ships[4] = Destroyer: length 2
     //initialize all to _direction = 'Z' and _startcoord = (-1, -1)
-    std::vector<Ship> _ships = { Ship(5, std::make_pair(-1, -1), 'Z', "Carrier"),
-                                 Ship(4, std::make_pair(-1, -1), 'Z', "Battleship"),
-                                 Ship(3, std::make_pair(-1, -1), 'Z', "Crusier"),
-                                 Ship(3, std::make_pair(-1, -1), 'Z', "Submarine"),
-                                 Ship(2, std::make_pair(-1, -1), 'Z', "Destroyer") };
+    std::vector<Ship> _ships = { Ship(5, std::make_pair(-1, -1), 'Z', "Carrier (Length 5)"),
+                                 Ship(4, std::make_pair(-1, -1), 'Z', "Battleship (Length 4)"),
+                                 Ship(3, std::make_pair(-1, -1), 'Z', "Crusier (Length 3)"),
+                                 Ship(3, std::make_pair(-1, -1), 'Z', "Submarine (Length 3)"),
+                                 Ship(2, std::make_pair(-1, -1), 'Z', "Destroyer (Length 2)") };
 
 };
 
@@ -305,7 +305,22 @@ public:
         }
     }
 
-    void printboard(){          //prints out the board's current state
+    void printboard(int player){          //prints out the board's current state
+        std::vector<Ship> S;
+        if (player == 1){
+            S = _player1.getShips();
+        } else {
+            S = _player2.getShips();
+        }
+        /*
+        for (auto i : S){
+            if (i.getDirection() != 'Z'){
+                std::pair<int, int> start = i.getStartCoord();
+                switch(i.getDirection()){
+                    case 'N': _playerboard[std::get<1>(start)][std::get<0>(start)] = 'V';
+                }
+            }
+        }*/
         for (const auto &i : _playerboard){
             for (auto j: i){
                 std::cout<<j<<" ";

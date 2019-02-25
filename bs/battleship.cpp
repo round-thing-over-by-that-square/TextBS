@@ -16,7 +16,7 @@ using std::vector;
 int main(){
     //Create environment object, which owns 2 players who, in turn, own their fleets of ships
     Environment e = Environment();
-    e.printboard();
+    e.printboard(1);
 
     //Place each player's ships
     e.placePlayerShips(1);
