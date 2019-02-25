@@ -138,7 +138,6 @@ public:
 
     void addshipboard(Ship i) {          //Adds the ships to the board
         char dir = i.getDirection();
-        std::cout<<"TEST"<<dir<<std::endl;
         std::pair<int, int> start = i.getStartCoord();
         switch (dir) {
             case 'N':
