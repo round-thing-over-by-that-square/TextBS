@@ -1,5 +1,5 @@
 //#include <SFML/Graphics.hpp>
-#include "class.hpp"
+#include "class.h"
 
 #include <utility>
 using std::pair;
@@ -11,7 +11,11 @@ using std::vector;
 //#include "catch.hpp"
 #include <iostream>
 
-
+int flip(int n){
+    if(n == 1)
+        return 2;
+    return 1;
+}
 
 int main(){
     //Create environment object, which owns 2 players who, in turn, own their fleets of ships
@@ -20,7 +24,7 @@ int main(){
     //Place each player's ships
     e.placePlayerShips(1);
     e.placePlayerShips(2);
-
+    int n = 1;
     //start game loop
     while(true){
 
@@ -29,7 +33,13 @@ int main(){
             break;
         }
 
+        e.go(n); //hit or miss message delivered in Player.checkHit(), scores updated in Player.directHit()
+        std::cout << "Press any key when you are ready to pass the computer." << std::endl;
+        std::cin;
+        std::cin.clear();
 
+        n = flip(n);
+        /*
         // if player1 turn
         if (e.getPlayer1()->getTurn()) {
             e.go(1); //hit or miss message delivered in Player.checkHit(), scores updated in Player.directHit()
@@ -46,10 +56,7 @@ int main(){
             std::cin;
             std::cin.clear();
             //*************swap screens here ***************
-        }
-
-        //Turn Swap
-        //e.changeTurn();
+        }*/
     }
     //end game loop
 
