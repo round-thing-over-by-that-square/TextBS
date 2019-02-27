@@ -42,6 +42,8 @@ int main(){
     }
     //end game loop
 
+    e.printScores();
+
     if (e.win() == 1) {
         std::cout << "Player 1 wins!" << std::endl;
     }

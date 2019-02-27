@@ -234,7 +234,7 @@ public:
 
     //this is a setter, setScore() with a Battleshipy name
     void directHit() {
-        _score = _score + 1;
+        _score += 1;
 
     }
     //end setters and getterss
@@ -407,6 +407,11 @@ public:
         else if (player == 2) {
             _player2.setTurn(turn);
         }
+    }
+
+    void printScores(){
+        std::cout<<"Player 1 Score: "<<_player1.getScore()<<std::endl;
+        std::cout<<"Player 2 Score: "<<_player2.getScore()<<std::endl;
     }
 
     void placePlayerShips(int player) {
