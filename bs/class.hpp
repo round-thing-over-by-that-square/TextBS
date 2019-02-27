@@ -269,7 +269,7 @@ public:
         //look at each ship
         for (auto sh : _ships) {
             //if the x value of the start coord is still -1, it hasn't been placed yet, so ignore it.
-            if (sh.getStartCoord().first != -1 && !(sh.getName().compare(_ships[ship].getName()))) {
+            if (sh.getStartCoord().first != -1) {
                 //if it has been placed, loop through its coords, and compare them to the
                 //potential coords of the ship you are placing.
                 for (auto coordExisting : sh.getCoords()) {
