@@ -10,8 +10,8 @@
 #ifndef FILE_CLASS_HPP
 #define FILE_CLASS_HPP
 
-void clear(){
-    for (int i = 0; i < 40; ++i)
+void clear(){                       //'clears' the board by printing 40 empty lines. Does this to prevent
+    for (int i = 0; i < 40; ++i)    //the next player from seeing the first player's board
         std::cout<<std::endl;
 }
 
@@ -70,7 +70,6 @@ public:
                         }
                     }
                     break;
-
             }
         }
         return coords;
@@ -261,7 +260,6 @@ public:
     void addToHitList(const std::pair<int, int> &coord) {
         _hitList.push_back(coord);
     }
-
     //Returns true if you are not attempting to place one ship on top of another, else returns false
     bool noOverlap(std::pair<int, int> startCoord, char dir, int ship) {
         //generate potential coords for ship you are placing to cross check against already placed ships' coords
@@ -269,7 +267,7 @@ public:
         //look at each ship
         for (auto sh : _ships) {
             //if the x value of the start coord is still -1, it hasn't been placed yet, so ignore it.
-            if (sh.getStartCoord().first != -1) {
+            if (sh.getStartCoord().first != -1 && !(sh.getName().compare(_ships[ship].getName()))) {
                 //if it has been placed, loop through its coords, and compare them to the
                 //potential coords of the ship you are placing.
                 for (auto coordExisting : sh.getCoords()) {
@@ -433,6 +431,7 @@ public:
 
     //Lob a bomb.
     void go(int player) {
+        clear();
         std::string str;
         int x;
         int y;
