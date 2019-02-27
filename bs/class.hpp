@@ -340,7 +340,7 @@ public:
                     }
                 }
                     //Bad placement. Try again
-                else { //(_ships[ship].getCoords()[0].first != -1) {
+                else {
                     std::cout << "The placement you requested is invalid. No part of 2 or more ships may occupy the same location." << std::endl;
                     std::cout << "Please try again." << std::endl;
                     x = -1;
@@ -409,17 +409,6 @@ public:
         }
     }
 
-    // calls _player1 and _player2's noOverlap() function,
-    // which returns true if you aren't stacking one ship on another.
-    bool noOverlap(int player, std::pair<int, int> startCoord, char dir, int ship) {
-        if (player == 1) {
-            return _player1.noOverlap(startCoord, dir, ship);
-        }
-        else if (player == 2) {
-            return _player2.noOverlap(startCoord, dir, ship);
-        }
-    }
-
     void placePlayerShips(int player) {
         if (player == 1) {
             _player1.placeShips();
@@ -481,13 +470,6 @@ public:
     std::unique_ptr<Player> getPlayer2() {
         return std::make_unique<Player>(_player2);
     }
-
-
-
-    // We only need this for testing, I think, at least so far. Comment out later. *****************************************
-    //Player getPlayer1() {
-    //  return _player1;
-    //}
 
 
     //Anyone win yet?
