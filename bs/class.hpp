@@ -10,10 +10,14 @@
 #ifndef FILE_CLASS_HPP
 #define FILE_CLASS_HPP
 
+void clear(){
+    for (int i = 0; i < 40; ++i)
+        std::cout<<std::endl;
+}
+
 ///////////////////
 //  SHIP CLASS   //
 ///////////////////
-
 class Ship
 {
 public:
@@ -240,6 +244,7 @@ public:
     //takes a coordinate
     //returns the coordinate of a hit or (-1, -1) if there are none.
     std::pair<int, int> checkHit(std::pair<int, int> coord) {
+        clear();
         for (auto ship : _ships) {
             for (auto c : ship.getCoords()) {
                 if (coord == c) {

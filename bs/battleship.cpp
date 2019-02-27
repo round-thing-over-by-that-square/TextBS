@@ -36,7 +36,6 @@ int main(){
         e.go(n); //hit or miss message delivered in Player.checkHit(), scores updated in Player.directHit()
         std::cout << "Pass the computer! Press Enter when ready" << std::endl;
         std::cin.get();
-        std::cin.clear();
 
         n = flip(n);
 
